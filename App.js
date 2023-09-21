@@ -4,7 +4,31 @@ import styles from './styles/main'
 
 export default function App() {
 
-  const [value, setValue] = useState("1");
+  const [value, setValue] = useState("");
+
+  function realizaCalculo(value){
+    if(value.includes("%")){
+      var first = parseFloat(value.split("%")[0]);
+      var second = parseFloat(value.split("%")[1]);
+      return first % second;
+    }else if(value.includes("÷")){
+      var first = parseFloat(value.split("÷")[0]);
+      var second = parseFloat(value.split("÷")[1]);
+      return first / second;
+    }else if(value.includes("+")){
+      var first = parseFloat(value.split("+")[0]);
+      var second = parseFloat(value.split("+")[1]);
+      return first + second;
+    }else if(value.includes("-")){
+      var first = parseFloat(value.split("-")[0]);
+      var second = parseFloat(value.split("-")[1]);
+      return first - second;
+    }else if(value.includes("*")){
+      var first = parseFloat(value.split("*")[0]);
+      var second = parseFloat(value.split("*")[1]);
+      return first * second;
+    }
+  }
 
   function incrementValue(element){
     var new_value = value;
@@ -18,10 +42,18 @@ export default function App() {
       }
     }else if(element === "%" || element === "÷" || element === "+" || element === "-" || element === "*"){
       if(parseInt(value.charAt(value.length-1)).toString() != "NaN"){
-        new_value += element;
+        if(value.includes("%") || value.includes("÷") || value.includes("+") || value.includes("-") || value.includes("*")){
+          if(value.charAt(0) === "-"){
+            new_value += element;
+          }else{
+            new_value = realizaCalculo(value).toString();
+          }
+        }else{
+          new_value += element;
+        }
       }
     }else if(element === "="){
-      new_value = "Vai Palmeiras!"
+      new_value = realizaCalculo(value).toString();
     }else{
       new_value = value + element;
     }
